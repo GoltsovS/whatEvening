@@ -18,7 +18,7 @@
             tr( v-for="(event, index) in events", :key="event.title" )
               td {{ event.title }}
               td {{ event.description }}
-        section.panel.panel-danger(v-if != "events" )
+        section.panel.panel-danger(v-else)
           p
             | There are no event ... Lets add one now!
           div
