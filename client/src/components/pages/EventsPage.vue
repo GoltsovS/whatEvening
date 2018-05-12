@@ -1,24 +1,27 @@
 <template lang="pug">
   .container
     .row
-      .col-xs-12
+      .col-12
         h1
-          | Posts
+          | Мероприятия
         h3
-          | This file will list all the events
+          | Список всех доступных вам мероприятий
 
         section.panel.panel-success( v-if="events" )
-          .panel-heading
-            | list of events
           table.table.table-striped
             tr
-              th Title
-              th Description
-              th Action
+              th Название
+              th Описание
+              th Действие
             tr( v-for="(event, index) in events", :key="event.title" )
               td {{ event.title }}
               td {{ event.description }}
-        section.panel.panel-danger(v-else)
+              td
+                router-link(:to="{name: 'EditEvent', params: {id: event._id}}")
+                  |редактировать
+                button.btn.btn-danger.btn-sm(type="button", @click="removeEvent(event._id)")
+                  |удалить
+        section.panel.panel-danger(v-if="events.length == '0'")
           p
             | There are no event ... Lets add one now!
           div
@@ -39,6 +42,10 @@ export default {
     async getEvents () {
       const responce = await EventsServise.fetchEvents()
       this.events = responce.data.events
+    },
+    async removeEvent (value) {
+      await EventsServise.deleteEvent(value)
+      this.getEvents()
     }
   },
   mounted () {
@@ -46,3 +53,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .table {
+    th {
+      background: #69c3e8;
+    }
+  }
+</style>
