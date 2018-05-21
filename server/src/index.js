@@ -47,6 +47,12 @@ var isValidPassword = function(user, password) {
   return bCrypt.compareSync(password, user.password)
 }
 
+var isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/events');
+}
+
 // generate hash using bCrypt
 var createHash = function(password) {
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null)
@@ -67,13 +73,12 @@ passport.use('login', new LocalStrategy({
   passReqToCallback: true
 },
 function(req, username, password, done) {
-  console.log(done)
   User.findOne({
       'username': username
     },
     function(err, user) {
+      console.log(password + ' : ' + user)
       if (err) {
-        console.log('успешный вход')
         return done(err)
       }
       if (!user) {
@@ -84,6 +89,7 @@ function(req, username, password, done) {
         console.log('Invalid Password')
         return done(null, false, req.flash('message', 'Invalid Password'))
       }
+      console.log(req + "name: " + username)
       return done(null, user)
     })
 }
@@ -101,7 +107,7 @@ function(req, username, password, done) {
         return done(err)
       }
       if (user) {
-        alert('User already exists')
+        console.log('User already exists')
         return done(null, false, req.flash('message', 'User Already Exists'))
       } else {
         var newUser = new User()
