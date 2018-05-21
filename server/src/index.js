@@ -25,7 +25,7 @@ app.use(cors())
 app.use(flash())
 
 // Passport init
-app.use(expressSession({secret: 'mySercetKey'}))
+app.use(expressSession({secret: 'mySercetKey', resave: true, saveUninitialized: false}))
 app.use(passport.initialize())
 app.use(passport.session())
 

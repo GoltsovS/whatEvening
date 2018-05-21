@@ -3,14 +3,14 @@ const router = express.Router()
 const passport = require('passport')
 
 router.post('/login', passport.authenticate('login', {
-  successRedirect: '/events',
-  failureRedirect: '/user',
+  successRedirect: '/',
+  failureRedirect: '/login',
   failureFlash: true
 }))
 
 router.post('/user', passport.authenticate('signup', {
   successRedirect: '/',
-  failureRedirect: '/user',
+  failureRedirect: '/',
   failureFlash: true
 }))
 
