@@ -85,7 +85,7 @@ function(req, username, password, done) {
         console.log('User not found with username ' + username)
         return done(null, false , req.flash('message', 'User Not found.'))
       }
-      if (!isValidPassword(user, passport)) {
+      if (!isValidPassword(user, password)) {
         console.log('Invalid Password')
         return done(null, false, req.flash('message', 'Invalid Password'))
       }

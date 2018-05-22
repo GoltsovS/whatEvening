@@ -8,7 +8,7 @@ const UserSchema = new Schema ({
     type: String,
     unique: 'Такой e-mail уже существует'
   },
-  password: String,
+  password: String
 })
 
 const User = mongoose.model('User', UserSchema)
