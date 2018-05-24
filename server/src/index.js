@@ -5,7 +5,6 @@ const cors = require('cors')
 const passport = require('passport')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
-const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
 const config = require('./config/config')
 const LocalStrategy = require('passport-local').Strategy
@@ -25,7 +24,7 @@ app.use(cors())
 app.use(flash())
 
 // Passport init
-app.use(expressSession({secret: 'mySercetKey', resave: true, saveUninitialized: false}))
+app.use(expressSession({secret: 'mySercetKey', resave: false, saveUninitialized: true}))
 app.use(passport.initialize())
 app.use(passport.session())
 

@@ -8,6 +8,10 @@ router.post('/login', passport.authenticate('login', {
   failureFlash: true
 }))
 
+router.get('/login', function(req, res) {
+  res.send(req.cookies)
+})
+
 router.post('/user', passport.authenticate('signup', {
   successRedirect: '/',
   failureRedirect: '/',
