@@ -1,7 +1,7 @@
 <template lang="pug">
   .container
-    .row
-      .col-12
+    .row.justify-content-center
+      .col-6
         h1
           | Создать мероприятие
         form
@@ -10,15 +10,18 @@
           .form-group
             textarea.form-control( type="text", rows="5", name="description", id="description", placeholder="Description", v-model.trim="event.description" )
           .form-group
+            Ymap
+          .form-group
             button.btn.btn-block.btn-primary( type="button", name="addEvent", id="addEvent", @click="addEvent()" )
               | создать мероприятние
-          section
+          .form-group
             button.btn.btn-success.btn-block( type="button", @click="goBack()" )
               | посмотреть все мероприятия
 </template>
 
 <script>
 import EventsServise from '@/services/EventsServise'
+import Ymap from '@/components/Ymap'
 export default {
   name: 'NewEventPage',
   data () {
@@ -28,6 +31,9 @@ export default {
         description: ''
       }
     }
+  },
+  components: {
+    Ymap
   },
   methods: {
     async addEvent () {
