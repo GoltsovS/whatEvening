@@ -5,7 +5,7 @@
              :behaviors="['scrollZOom']"
              :controls="['trafficControl', 'zoomControl']"
              map-type="map")
-    // ymap-marker(marker-type="placemark"
+    ymap-marker(marker-type="placemark"
                 v-for="placemark in placemarks"
                 :marker-id="placemark.markerId"
                 :key="placemark.markerId"
@@ -17,10 +17,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import YmapPlugin from 'vue-yandex-maps'
-
-Vue.use(YmapPlugin)
+import {yandexMap, ymapMarker} from 'vue-yandex-maps'
 
 export default {
   data () {
@@ -32,7 +29,7 @@ export default {
           properties: {}, // define properties here
           options: {}, // define options here
           clusterName: '5',
-          icon: {color: 'green', glyph: 'home'},
+          icon: {color: 'blue', glyph: 'home'},
           callbacks: { click: function () {} }
         },
         {
@@ -41,11 +38,15 @@ export default {
           properties: {}, // define properties here
           options: {}, // define options here
           clusterName: '6',
-          icon: {color: 'green', glyph: 'cinema'},
+          icon: {color: 'blue', glyph: 'cinema'},
           callbacks: { click: function () {} }
         }
       ]
     }
+  },
+  components: {
+    yandexMap,
+    ymapMarker
   }
 }
 </script>
