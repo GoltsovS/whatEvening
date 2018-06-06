@@ -26,12 +26,12 @@
           router-link( :to="{ name: 'NewEvent' }" )
             | add new event
     .events__map
-      Ymap
+      Gmap
 </template>
 
 <script>
 import EventsServise from '@/services/EventsServise'
-import Ymap from '@/components/Ymap'
+import Gmap from '@/components/Gmap'
 export default {
   name: 'EventsPage',
   data () {
@@ -40,7 +40,7 @@ export default {
     }
   },
   components: {
-    Ymap
+    Gmap
   },
   methods: {
     async getEvents () {

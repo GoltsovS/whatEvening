@@ -9,8 +9,9 @@
             input.form-control( type="text", name="title", id="title", placeholder="Title", v-model.trim="event.title" )
           .form-group
             textarea.form-control( type="text", rows="5", name="description", id="description", placeholder="Description", v-model.trim="event.description" )
+            input.form-control(type="text", name="coords", id="coords", v-model="event.coords")
           .form-group
-            Ymap
+            Gmap
           .form-group
             button.btn.btn-block.btn-primary( type="button", name="addEvent", id="addEvent", @click="addEvent()" )
               | создать мероприятние
@@ -21,19 +22,20 @@
 
 <script>
 import EventsServise from '@/services/EventsServise'
-import Ymap from '@/components/Ymap'
+import Gmap from '@/components/Gmap'
 export default {
   name: 'NewEventPage',
   data () {
     return {
       event: {
         title: '',
-        description: ''
+        description: '',
+        coords: ''
       }
     }
   },
   components: {
-    Ymap
+    Gmap
   },
   methods: {
     async addEvent () {
