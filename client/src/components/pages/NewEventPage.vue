@@ -9,7 +9,6 @@
             input.form-control( type="text", name="title", id="title", placeholder="Title", v-model.trim="event.title" )
           .form-group
             textarea.form-control( type="text", rows="5", name="description", id="description", placeholder="Description", v-model.trim="event.description" )
-            input.form-control(type="text", name="coords", id="coords", v-model="event.coords")
           .form-group
             Gmap
           .form-group
