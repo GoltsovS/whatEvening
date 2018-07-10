@@ -1,5 +1,6 @@
 <template lang="pug">
   .container
+    headerFixed
     .row.justify-content-center
       .col-6
         h1
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
 import Gmap from '@/components/Gmap'
 export default {
@@ -34,6 +36,7 @@ export default {
     }
   },
   components: {
+    headerFixed,
     Gmap
   },
   methods: {

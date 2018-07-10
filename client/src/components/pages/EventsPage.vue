@@ -1,35 +1,38 @@
 <template lang="pug">
-  .events
-    .events__container
-      h1
-        | Мероприятия
-      h3
-        | Список всех доступных вам мероприятий
-      section.panel.panel-success( v-if="events" )
-        table.table.table-striped
-          tr
-            th Название
-            th Описание
-            th Действие
-          tr( v-for="(event, index) in events", :key="event.title" )
-            td {{ event.title }}
-            td {{ event.description }}
-            td
-              router-link(:to="{name: 'EditEvent', params: {id: event._id}}")
-                |редактировать
-              button.btn.btn-danger.btn-sm(type="button", @click="removeEvent(event._id)")
-                |удалить
-      section.panel.panel-danger(v-if="events.length == '0'")
-        p
-          | There are no event ... Lets add one now!
-        div
-          router-link( :to="{ name: 'NewEvent' }" )
-            | add new event
-    .events__map
-      Gmap
+  .events__wrap
+    headerFixed
+    .events
+      .events__container
+        h1
+          | Мероприятия
+        h3
+          | Список всех доступных вам мероприятий
+        section.panel.panel-success( v-if="events" )
+          table.table.table-striped
+            tr
+              th Название
+              th Описание
+              th Действие
+            tr( v-for="(event, index) in events", :key="event.title" )
+              td {{ event.title }}
+              td {{ event.description }}
+              td
+                router-link(:to="{name: 'EditEvent', params: {id: event._id}}")
+                  |редактировать
+                button.btn.btn-danger.btn-sm(type="button", @click="removeEvent(event._id)")
+                  |удалить
+        section.panel.panel-danger(v-if="events.length == '0'")
+          p
+            | There are no event ... Lets add one now!
+          div
+            router-link( :to="{ name: 'NewEvent' }" )
+              | add new event
+      .events__map
+        Gmap
 </template>
 
 <script>
+import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
 import Gmap from '@/components/Gmap'
 export default {
@@ -40,6 +43,7 @@ export default {
     }
   },
   components: {
+    headerFixed,
     Gmap
   },
   methods: {

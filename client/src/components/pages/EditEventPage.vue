@@ -1,5 +1,7 @@
 <template lang="pug">
   section.edit
+    .container
+      headerFixed
     h1
       |редактировать событие
     form(@submit.prevent="editEvent()")
@@ -25,9 +27,13 @@
 </template>
 
 <script>
+import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
 export default {
   name: 'EditEventPage',
+  components: {
+    headerFixed
+  },
   data () {
     return {
       event: {
