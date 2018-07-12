@@ -1,23 +1,24 @@
 <template lang="pug">
-  .container
+  .wrapper
     headerFixed
-    .row.justify-content-center
-      .col-6
-        h1
-          | Создать мероприятие
-        form
-          .form-group
-            input.form-control( type="text", name="title", id="title", placeholder="Title", v-model.trim="event.title" )
-          .form-group
-            textarea.form-control( type="text", rows="5", name="description", id="description", placeholder="Description", v-model.trim="event.description" )
-          .form-group
-            Gmap
-          .form-group
-            button.btn.btn-block.btn-primary( type="button", name="addEvent", id="addEvent", @click="addEvent()" )
-              | создать мероприятние
-          .form-group
-            button.btn.btn-success.btn-block( type="button", @click="goBack()" )
-              | посмотреть все мероприятия
+    .container
+      .row.justify-content-center
+        .col-6
+          h1
+            | Создать мероприятие
+          form
+            .form-group
+              input.form-control( type="text", name="title", id="title", placeholder="Title", v-model.trim="event.title" )
+            .form-group
+              textarea.form-control( type="text", rows="5", name="description", id="description", placeholder="Description", v-model.trim="event.description" )
+            .form-group
+              Gmap(gmapAutocomplete)
+            .form-group
+              button.btn.btn-block.btn-primary( type="button", name="addEvent", id="addEvent", @click="addEvent()" )
+                | создать мероприятние
+            .form-group
+              button.btn.btn-success.btn-block( type="button", @click="goBack()" )
+                | посмотреть все мероприятия
 </template>
 
 <script>

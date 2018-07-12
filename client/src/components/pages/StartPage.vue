@@ -1,7 +1,9 @@
 <template lang="pug">
-  .container
+  .wrapper
     headerFixed
-    .page-title Главная
+    .container
+      h1 Главная
+      p some prerender info
 </template>
 
 <script>

@@ -3,7 +3,7 @@
     nav.navbar.navbar-expand-sm.navbar-light.bg-faded
       button.navbar-toggler(type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation")
         span.navbar-toggler-icon
-      router-link.navbar-brand( :to="{ name: 'StartPage' }")
+      router-link.navbar-brand( :to="{ name: 'Start' }")
         |WhatEvening
       .collapse.navbar-collapse#nav-content
         ul.navbar-nav.ml-auto
@@ -14,7 +14,7 @@
             router-link( :to="{ name: 'Events' }")
               | перейти к событиям
           li.nav-item.ml-3
-          li.nav-item.nav-item__user(v-if="$auth.user")
+          li.nav-item.nav-item__user(v-if="$auth.isAuthenticated()")
             span.nav-item__name {{$auth.user.nickname}}
             img.nav-item__logo(:src="$auth.user.picture")
             .user-menu
@@ -37,7 +37,11 @@ export default {
 </script>
 
 <style lang="scss" scope>
+  .header-fixed {
+    background: rgba(0,0,0,0.7);
+  }
   .nav-item {
+    color: rgb(255,255,255);
     &__logo {
       border-radius: 50%;
       max-height: 20px;
@@ -64,6 +68,9 @@ export default {
         }
       }
     }
+  }
+  .navbar-light .navbar-brand {
+    color: rgb(255,255,255);
   }
   .user-menu {
     display: none;

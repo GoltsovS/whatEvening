@@ -1,7 +1,6 @@
 <template lang="pug">
-  section.edit
-    .container
-      headerFixed
+  .wrapper
+    headerFixed
     h1
       |редактировать событие
     form(@submit.prevent="editEvent()")

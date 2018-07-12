@@ -1,10 +1,8 @@
 <template lang="pug">
-  .events__wrap
+  .wrapper
     headerFixed
     .events
       .events__container
-        h1
-          | Мероприятия
         h3
           | Список всех доступных вам мероприятий
         section.panel.panel-success( v-if="events" )
@@ -65,8 +63,10 @@ export default {
 <style lang="scss">
   .events {
     display: flex;
+    height: calc(100% - 56px);
     &__container {
       width: 40%;
+      background: rgba(0,0,0,0.2);
     }
     &__map {
       width: 60%;

@@ -1,8 +1,9 @@
 <template lang="pug">
   .gmap-container
-    gmap-autocomplete.form-control(@place_changed="setPlace")
+    gmap-autocomplete.form-control(v-if="gmapAutocomplete"
+                                   @place_changed="setPlace")
     GmapMap(:center="center"
-            :zoom="7"
+            :zoom="12"
             ref="map"
             map-type-id="roadmap"
             style="width: 100%; height: 300px;"
@@ -23,6 +24,7 @@ Vue.use(VueGoogleMaps, {
 })
 
 export default {
+  props: ['gmapAutocomplete'],
   data () {
     return {
       center: {lat: 45.508, lng: -73.587},
@@ -38,8 +40,7 @@ export default {
       }
     },
     setPlace (place) {
-      console.log(place)
-      this.currentPlace = place
+      this.marker = place
     },
     geolocate: function () {
       navigator.geolocation.getCurrentPosition(position => {
@@ -47,12 +48,13 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        console.log(this.center)
+        // console.log(this.center)
       })
     }
   },
   mounted () {
     this.geolocate()
+    console.log(this.$refs)
   }
 }
 </script>
