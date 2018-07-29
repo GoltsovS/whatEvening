@@ -1,5 +1,5 @@
 <template lang="pug">
-  .callback Callback
+  .callback Редирект на авторизацию
 </template>
 
 <script>

@@ -3,28 +3,32 @@
     headerFixed
     .container
       .row.justify-content-center
-        .col-6
+        .col-md-6
           h1
             | Создать мероприятие
           form
+            .form-group(v-if="event.error")
+              .alert.alert-danger.p-1.pl-2.text-left {{event.error}}
             .form-group
-              input.form-control( type="text", name="title", id="title", placeholder="Title", v-model.trim="event.title" )
+              input.form-control(type="text", name="title", id="title", placeholder="Название мероприятия", v-model.trim="event.title")
             .form-group
-              textarea.form-control( type="text", rows="5", name="description", id="description", placeholder="Description", v-model.trim="event.description" )
+              textarea.form-control(type="text", rows="5", name="description", id="description", placeholder="Описание", v-model.trim="event.description")
             .form-group
-              Gmap(gmapAutocomplete)
+              Gmap(gmapAutocomplete
+                   styleMap="width:100%; height: 300px;"
+                   @setCoords="onCoords")
             .form-group
-              button.btn.btn-block.btn-primary( type="button", name="addEvent", id="addEvent", @click="addEvent()" )
+              button.btn.btn-block.btn-primary(type="button", name="addEvent", id="addEvent", @click="addEvent()")
                 | создать мероприятние
             .form-group
-              button.btn.btn-success.btn-block( type="button", @click="goBack()" )
+              button.btn.btn-success.btn-block(type="button", @click="goBack()")
                 | посмотреть все мероприятия
 </template>
 
 <script>
 import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
-import Gmap from '@/components/Gmap'
+import Gmap from '@/components/modules/Gmap'
 export default {
   name: 'NewEventPage',
   data () {
@@ -32,7 +36,9 @@ export default {
       event: {
         title: '',
         description: '',
-        coords: ''
+        adress: '',
+        coords: '',
+        error: ''
       }
     }
   },
@@ -42,16 +48,23 @@ export default {
   },
   methods: {
     async addEvent () {
-      console.log(this.event.title)
-      if (this.event.title !== '' && this.event.description !== '') {
+      console.log(this.event.adress)
+      if (this.event.title !== '' && this.event.description !== '' && this.event.coords) {
         await EventsServise.addNewEvent({
           title: this.event.title,
-          description: this.event.description
+          description: this.event.description,
+          coords: {
+            lat: this.event.coords.lat,
+            lng: this.event.coords.lng
+          }
         })
         this.$router.push({name: 'Events'})
       } else {
-        alert('Заполните поля!')
+        this.event.error = 'Заполните все поля!'
       }
+    },
+    onCoords (data) {
+      this.event.coords = data.coords
     },
     goBack () {
       this.$router.push({name: 'Events'})

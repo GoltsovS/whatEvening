@@ -18,14 +18,14 @@
             span.nav-item__name {{$auth.user.nickname}}
             img.nav-item__logo(:src="$auth.user.picture")
             .user-menu
-              router-link( :to="{ name: ''}")
+              router-link( :to="{ name: 'UserDetail'}")
                 | Кабинет
               button.user-link__btn( @click="$auth.logout()")
                 | Выйти
           li.nav-item.ml-3(v-else)
-            router-link(  :to="{}")
+            router-link(  :to="{ name: 'UserDetail'}")
               |Войти
-            span |
+            span.pl-1.pr-1 |
             router-link( :to="{}" )
               | Зарегитрироваться
 </template>
@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss" scope>
   .header-fixed {
-    background: rgba(0,0,0,0.7);
+    background: #545b62;
   }
   .nav-item {
     color: rgb(255,255,255);

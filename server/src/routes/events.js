@@ -6,7 +6,11 @@ const Event = require('../models/event-model')
 router.post('/events', (req, res) => {
   const event = new Event({
     title: req.body.title,
-    description: req.body.description
+    description: req.body.description,
+    coords: {
+      lat: req.body.coords.lat,
+      lng: req.body.coords.lng
+    }
   })
   event.save((err, data) => {
     if (err) {
@@ -22,7 +26,7 @@ router.post('/events', (req, res) => {
 
 // get events
 router.get('/events', (req, res) => {
-  Event.find({}, 'title description', (err, events) => {
+  Event.find({}, 'title description coords', (err, events) => {
     if (err) {
       res.sendStatus(500)
     } else {

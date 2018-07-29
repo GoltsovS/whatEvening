@@ -8,6 +8,14 @@ const EventSchema = new Schema ({
   },
   description: {
     type: String
+  },
+  coords: {
+    lat: {
+      type: Number
+    },
+    lng: {
+      type: Number
+    }
   }
 })
 
