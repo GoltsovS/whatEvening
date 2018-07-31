@@ -10,6 +10,9 @@ router.post('/events', (req, res) => {
     coords: {
       lat: req.body.coords.lat,
       lng: req.body.coords.lng
+    },
+    user: {
+      id: req.body.user.id
     }
   })
   event.save((err, data) => {
@@ -26,7 +29,7 @@ router.post('/events', (req, res) => {
 
 // get events
 router.get('/events', (req, res) => {
-  Event.find({}, 'title description coords', (err, events) => {
+  Event.find({}, 'title description coords user', (err, events) => {
     if (err) {
       res.sendStatus(500)
     } else {
@@ -37,7 +40,7 @@ router.get('/events', (req, res) => {
 
 // get 1 event
 router.get('/events/:id', (req, res) => {
-  Event.findById(req.params.id, 'title description', (err, event) => {
+  Event.findById(req.params.id, 'title description coords user', (err, event) => {
     if (err) {
       res.sendStatus(500)
     } else {
