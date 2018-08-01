@@ -4,7 +4,7 @@
       gmap-autocomplete.form-control(@place_changed="setPlace")
       button.btn.btn-success.ml-2(@click="addMarker") Добавить
     GmapMap(:center="center"
-            :zoom="12"
+            :zoom="zoom"
             ref="map"
             map-type-id="roadmap"
             :style='styleMap')
@@ -44,8 +44,8 @@ export default {
       markers: [],
       places: [],
       currentPlace: null,
-      currentEvent: [],
       currentMidx: null,
+      zoom: 10,
       infoContent: '',
       infoWindowPos: null,
       infoWinOpen: false,
@@ -75,6 +75,7 @@ export default {
         this.$emit('setCoords', {
           coords: marker
         })
+        this.zoom = 16
       }
     },
     geolocate: function () {
@@ -83,6 +84,7 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
+        console.log(this.marker)
       })
     },
     toggleInfoWindow: function (marker, idx) {

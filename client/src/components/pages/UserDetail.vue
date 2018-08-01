@@ -3,16 +3,16 @@
     headerFixed
     .container.mt-3
       .row
-        .col-md-3
+        .col-md-2
           .user__logo(@click="updatePicture()")
             img.user__img(:src="$auth.user.picture")
             // input.user__file(type="file")
-        .col-md-9.text-left
+        .col-md-10.text-left
           .user__tabs.btn-group.mb-3(role="group")
-            button.btn.btn-secondary(type="button") Посещенные мероприятия
-            button.btn.btn-secondary(type="button") Персональные данные
-            button.btn.btn-secondary(type="button") Архив заявок
-          table
+            button.btn.btn-secondary.user__btn(:class="{active: condition === 1}" type="button" @click="condition = 1") Персональные данные
+            button.btn.btn-secondary.user__btn(:class="{active: condition === 2}" type="button" @click="condition = 2") Созданные мероприятия
+            button.btn.btn-secondary.user__btn(:class="{active: condition === 3}" type="button" @click="condition = 3") Архив заявок
+          table(v-if="condition === 1")
             tr
               td
                 h2.user__name {{$auth.user.name}}
@@ -25,53 +25,49 @@
             tr(v-if="$auth.user.user_metadata")
               td Адрес:
               td {{$auth.user.user_metadata.adress}}
+          table(v-if="condition == 2")
+            tr
+              td
+                h2 События
+          table(v-if="condition == 3")
+            tr
+              td
+                h2 Архив заявок
 </template>
 
 <script>
 import headerFixed from '@/components/modules/header'
-import axios from 'axios'
+import UserServise from '@/services/UserServise'
 export default {
   name: 'UserDetail',
   data () {
     return {
-      user_id: ''
+      user_id: '',
+      condition: 1
     }
   },
   components: {
     headerFixed
   },
   methods: {
-    async updatePicture (user) {
-      console.log('клик был')
-      console.log(user)
-      var settings = {
-        async: true,
-        crossDomain: true,
-        url: 'https://what-evening.auth0.com/api/v2/users',
-        method: 'PATCH',
-        headers: {
-          'authorization': 'Bearer ABCD',
-          'Access-Control-Allow-Origin': '*',
-          'content-type': 'application/json'
-        },
-        processData: false,
-        data: '{\'email\': \'jane.doe@example.com\', \'user_metadata\': {\'hobby\': \'surfing\'}, \'app_metadata\': {\'plan\': \'full\'}}'
-      }
-      await axios(settings)
-        .then(responce => {
-          console.log(responce)
-        })
+    async updatePicture () {
+      await UserServise.updateUserPicture({
+        picture: this.picture,
+        userId: this.$auth.user.sub
+      }).then(response => {
+        // todo: handle response
+        console.log(response)
+      })
     }
-  },
-  mounted () {
-    console.log(this.$auth.user)
-    // console.log(localStorage.getItem('id_token'))
   }
 }
 </script>
 
 <style lang="scss">
   .user {
+    &__btn {
+      padding: 30px;
+    }
     &__file {
       width: 100%;
       height: 100%;
@@ -89,8 +85,8 @@ export default {
     }
     &__logo {
       position: relative;
-      width: 150px;
-      height: 150px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       overflow: hidden;
       cursor: pointer;
@@ -102,7 +98,7 @@ export default {
           height: 100%;
           background: rgba(0,0,0,0.5);
           color: rgb(255,255,255);
-          line-height: 150px;
+          line-height: 120px;
         }
       }
     }

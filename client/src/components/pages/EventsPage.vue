@@ -3,27 +3,20 @@
     headerFixed
     .events
       .events__container
-        h3
-          | Список всех доступных вам мероприятий
         section.panel.panel-success(v-if="events")
-          table.table.table-striped
-            tr
-              th Название
-              th Описание
-              th Действие
-            tr( v-for="(event, index) in events", :key="event.title" @click="findEvent(event, index)")
-              td {{ event.title }}
-              td {{ event.description }}
-              td
-                router-link(:to="{name: 'EditEvent', params: {id: event._id}}")
-                  |редактировать
-                button.btn.btn-danger.btn-sm(type="button", @click="removeEvent(event._id)")
-                  |удалить
+          .event.p-1.pr-3.text-left(v-for="(event, index) in events", :key="event.title" @click="findEvent(event, index)")
+            p.event__title {{event.title}}
+            p.event__description {{event.description}}
+            .event__nav.text-right(v-if="$auth.user.sub && ($auth.user.sub === event.user.id)")
+              router-link.btn.btn-secondary.btn-sm.event__edit(:to="{name: 'EditEvent', params: {id: event._id}}")
+                icon(name="edit")
+              button.btn.btn-danger.btn-sm.event__remove(type="button", @click="removeEvent(event._id)")
+                icon(name="times")
         section.panel.panel-danger(v-if="events.length == '0'")
           p
             | На данный момент нет мероприятий... Создайте своё
           div
-            router-link( :to="{ name: 'NewEvent' }" )
+            router-link(:to="{name: 'NewEvent'}")
               | add new event
       .events__map
         Gmap(styleMap="width:100%; height: 100%;"
@@ -34,6 +27,8 @@
 import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
 import Gmap from '@/components/modules/Gmap'
+import Icon from 'vue-awesome'
+
 export default {
   name: 'EventsPage',
   data () {
@@ -43,7 +38,8 @@ export default {
   },
   components: {
     headerFixed,
-    Gmap
+    Gmap,
+    Icon
   },
   methods: {
     async getEvents () {
@@ -55,12 +51,14 @@ export default {
       this.getEvents()
     },
     findEvent: function (event, index) {
+      console.log(this)
       // todo: передавать индекс в Gmap для смещения центра на карте при клике по событию
       console.log(this.events[index])
     }
   },
   mounted () {
     this.getEvents()
+    console.log(this.$auth.user)
   }
 }
 </script>
@@ -69,17 +67,52 @@ export default {
   .events {
     display: flex;
     height: calc(100% - 56px);
+    @media (max-width: 992px) {
+        flex-direction: column-reverse;
+      }
     &__container {
       width: 40%;
-      background: rgba(0,0,0,0.2);
+      height: 100%;
+      background: #545b62;
+      overflow: auto;
+      @media (max-width: 992px) {
+        width: 100%;
+      }
     }
     &__map {
       width: 60%;
+      @media (max-width: 992px) {
+        width: 100%;
+        height: 400px;
+      }
     }
   }
-  .table {
-    th {
-      background: #69c3e8;
+  .event {
+    width: 100%;
+    height: 130px;
+    position: relative;
+    background: rgb(255,255,255);
+    border-bottom: 2px solid rgb(230,230,230);
+    cursor: pointer;
+    &__description {
+      font-size: .7rem;
+    }
+    &__edit {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
+    &__remove {
+      width: 34px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    &__title {
+      font-weight: bold;
+    }
+    &:hover {
+      background: rgb(230,230,230);
     }
   }
 </style>

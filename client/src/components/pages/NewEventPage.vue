@@ -29,6 +29,7 @@
 import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
 import Gmap from '@/components/modules/Gmap'
+
 export default {
   name: 'NewEventPage',
   data () {
@@ -56,6 +57,9 @@ export default {
           coords: {
             lat: this.event.coords.lat,
             lng: this.event.coords.lng
+          },
+          user: {
+            id: this.$auth.user.sub
           }
         })
         this.$router.push({name: 'Events'})

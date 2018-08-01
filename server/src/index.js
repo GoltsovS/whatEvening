@@ -32,3 +32,15 @@ mongoose.connection
   })
   .on('error', error => console.warn(error))
 
+var request = require("request")
+
+var options = { method: 'POST',
+  url: 'https://what-evening.auth0.com/oauth/token',
+  headers: { 'content-type': 'application/json' },
+  body: '{"client_id":"ax83lO9LAk4ddKR34lH3VqVj7aOIgXVp","client_secret":"nWw5SibCw1IcRjGFdIAuuxTxQEruq9VfK1dv6DoYCKe0HBlYM2wma0rjZMAPbL3S","audience":"https://what-evening.auth0.com/api/v2/","grant_type":"client_credentials"}' };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error)
+
+  console.log(body.access_token)
+})

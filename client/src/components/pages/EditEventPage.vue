@@ -1,28 +1,31 @@
 <template lang="pug">
   .wrapper
     headerFixed
-    h1
-      |редактировать событие
-    form(@submit.prevent="editEvent()")
-      div
-        input(type="text",
-              name="title",
-              id="title",
-              placeholder="Title",
-              v-model.trim="event.title")
-      div
-        input(type="text",
-              name="description",
-              id="description",
-              placeholder="Description",
-              v-model.trim="event.description")
-      div
-        button(type="submit",
-               name="editEvent")
-          |редактировать
-      div
-        router-link(:to="{name: 'Events'}")
-          |вернуться к списку событий
+    .container
+      .row.justify-content-center
+        .col-md-4
+          h1
+            |редактировать событие
+          form(@submit.prevent="editEvent()")
+            .form-group
+              input.form-control(type="text",
+                    name="title",
+                    id="title",
+                    placeholder="Title",
+                    v-model.trim="event.title")
+            .form-group
+              input.form-control(type="text",
+                    name="description",
+                    id="description",
+                    placeholder="Description",
+                    v-model.trim="event.description")
+            .form-group
+              button.btn.btn-success.btn-block(type="submit",
+                    name="editEvent")
+                |сохранить
+            .form-group
+              router-link.btn.btn-danger.btn-block(:to="{name: 'Events'}")
+                |вернуться к списку событий
 </template>
 
 <script>
