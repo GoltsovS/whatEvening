@@ -1,10 +1,10 @@
 <template lang="pug">
   .wrapper
     headerFixed
-    .container.mt-3
+    .user.container.mt-3
       .row
         .col-md-2
-          .user__logo(@click="updatePicture()")
+          .user__logo.mb-3(@click="updatePicture()")
             img.user__img(:src="$auth.user.picture")
             // input.user__file(type="file")
         .col-md-10.text-left
@@ -12,27 +12,25 @@
             button.btn.btn-secondary.user__btn(:class="{active: condition === 1}" type="button" @click="condition = 1") Персональные данные
             button.btn.btn-secondary.user__btn(:class="{active: condition === 2}" type="button" @click="condition = 2") Созданные мероприятия
             button.btn.btn-secondary.user__btn(:class="{active: condition === 3}" type="button" @click="condition = 3") Архив заявок
-          table(v-if="condition === 1")
-            tr
-              td
-                h2.user__name {{$auth.user.name}}
-            tr
-              td Никнейм:
-              td {{$auth.user.nickname}}
-            tr
-              td ID:
-              // td {{$auth.user.user_id}}
-            tr(v-if="$auth.user.user_metadata")
-              td Адрес:
-              td {{$auth.user.user_metadata.adress}}
-          table(v-if="condition == 2")
-            tr
-              td
-                h2 События
-          table(v-if="condition == 3")
-            tr
-              td
-                h2 Архив заявок
+          .user__tab(v-if="condition === 1")
+            h2.user__name {{user.name}}
+            .user-info
+              .user-info__wrap
+                span.user-info__label Никнейм
+                p.iser-info__text {{user.nickname}}
+              .user-info__wrap(v-if="user.metadata.city")
+                span.user-info__label Город
+                p.iser-info__text {{user.metadata.city}}
+              .user-info__wrap(v-if="user.metadata.adress")
+                span.user-info__label Адрес
+                p.iser-info__text {{user.metadata.adress}}
+            router-link.btn.btn-outline-info.btn-sm(:to="{name: 'UserUpdate'}")
+              |редактировать профиль
+          .user__tab(v-if="condition == 2")
+            h2 События
+            p Тут будут события, которые создал пользователь {{user.nickname}}
+          .user__tab(v-if="condition == 3")
+            h2 Архив заявок
 </template>
 
 <script>
@@ -42,8 +40,8 @@ export default {
   name: 'UserDetail',
   data () {
     return {
-      user_id: '',
-      condition: 1
+      condition: 1,
+      user: []
     }
   },
   components: {
@@ -52,13 +50,23 @@ export default {
   methods: {
     async updatePicture () {
       await UserServise.updateUserPicture({
-        picture: this.picture,
+        picture: {'user_metadata': {'picture': 'https://hashflare.io/img/sm-200x200.jpg'}},
         userId: this.$auth.user.sub
       }).then(response => {
         // todo: handle response
         console.log(response)
       })
+    },
+    async getToken () {
+      await UserServise.getAccessToken()
     }
+  },
+  mounted () {
+    this.getToken()
+    this.user = this.$auth.user
+    this.user['metadata'] = this.user['http://localhost:8080/user_metadata']
+    delete this.user['http://localhost:8080/user_metadata']
+    console.log(this.user)
   }
 }
 </script>
@@ -67,6 +75,9 @@ export default {
   .user {
     &__btn {
       padding: 30px;
+      @media (max-width:992px) {
+        padding: 5px;
+      }
     }
     &__file {
       width: 100%;
@@ -99,6 +110,22 @@ export default {
           background: rgba(0,0,0,0.5);
           color: rgb(255,255,255);
           line-height: 120px;
+        }
+      }
+    }
+    &-info {
+      &__label {
+        font-size: .7rem;
+        color: #ccc;
+      }
+    }
+    &__tabs {
+      @media (max-width: 992px) {
+        display: flex;
+        flex-direction: column;
+        .user__btn.btn {
+          border-radius: 0;
+          margin-left: 0;
         }
       }
     }

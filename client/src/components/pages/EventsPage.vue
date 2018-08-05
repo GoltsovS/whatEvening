@@ -51,14 +51,12 @@ export default {
       this.getEvents()
     },
     findEvent: function (event, index) {
-      console.log(this)
       // todo: передавать индекс в Gmap для смещения центра на карте при клике по событию
       console.log(this.events[index])
     }
   },
   mounted () {
     this.getEvents()
-    console.log(this.$auth.user)
   }
 }
 </script>

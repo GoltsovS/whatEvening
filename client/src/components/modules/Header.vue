@@ -20,17 +20,17 @@
             span.nav-item__name {{$auth.user.nickname}}
             img.nav-item__logo(:src="$auth.user.picture")
             .user-menu
-              router-link.btn.user-menu__btn( :to="{ name: 'UserDetail'}")
+              router-link.btn.user-menu__btn.btn-block.btn-primary(:to="{ name: 'UserDetail'}")
                 icon(name="user")
                 | Кабинет
-              button.btn.user-menu__btn( @click="$auth.logout()")
+              button.btn.user-menu__btn.btn-block.btn-outline-warning(@click="$auth.logout()")
                 icon(name="sign-out-alt")
                 | Выйти
           li.nav-item.ml-3(v-else)
-            router-link(  :to="{ name: 'UserDetail'}")
+            router-link(:to="{ name: 'UserDetail'}")
               |Войти
             span.pl-1.pr-1 |
-            router-link( :to="{}" )
+            router-link(:to="{ name: 'UserDetail'}")
               | Зарегитрироваться
 </template>
 
@@ -89,7 +89,7 @@ export default {
     }
   }
   .navbar-light {
-    z-index: 1;
+    z-index: 2;
     .navbar-brand {
       color: rgb(255,255,255);
     }
@@ -100,9 +100,6 @@ export default {
   .user-menu {
     display: none;
     transition: all 1s ease;
-    .user-menu__btn {
-      color: blue;
-    }
   }
   .router-link {
     display: block;

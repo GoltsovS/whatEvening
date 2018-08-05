@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const config = require('./config/config')
+const request = require('request')
 
 mongoose.Promise = global.Promise
 
@@ -21,6 +22,7 @@ app.use(flash())
 
 // routes
 app.use(require('./routes/events.js'))
+app.use(require('./routes/user.js'))
 
 mongoose.set('debug', true) //only for dev
 mongoose.connect(process.env.DB_URI)
@@ -31,16 +33,3 @@ mongoose.connection
       () => console.log(`Server start on port ${config.port} ...`))
   })
   .on('error', error => console.warn(error))
-
-var request = require("request")
-
-var options = { method: 'POST',
-  url: 'https://what-evening.auth0.com/oauth/token',
-  headers: { 'content-type': 'application/json' },
-  body: '{"client_id":"ax83lO9LAk4ddKR34lH3VqVj7aOIgXVp","client_secret":"nWw5SibCw1IcRjGFdIAuuxTxQEruq9VfK1dv6DoYCKe0HBlYM2wma0rjZMAPbL3S","audience":"https://what-evening.auth0.com/api/v2/","grant_type":"client_credentials"}' };
-
-request(options, function (error, response, body) {
-  if (error) throw new Error(error)
-
-  console.log(body.access_token)
-})

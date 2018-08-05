@@ -5,6 +5,7 @@ import Events from '@/components/pages/EventsPage'
 import NewEvent from '@/components/pages/NewEventPage'
 import EditEvent from '@/components/pages/EditEventPage'
 import UserDetail from '@/components/pages/UserDetail'
+import UserUpdate from '@/components/pages/UserUpdate'
 import Callback from '@/components/Callback'
 
 Vue.use(Router)
@@ -41,12 +42,17 @@ const router = new Router({
       path: '/userDetail',
       name: 'UserDetail',
       component: UserDetail
+    },
+    {
+      path: '/userUpdate',
+      name: 'UserUpdate',
+      component: UserUpdate
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'UserDetail' && to.name !== 'NewEvent' && to.name !== 'EditEvent') {
+  if (to.name !== 'UserDetail' && to.name !== 'Events' && to.name !== 'NewEvent' && to.name !== 'EditEvent') {
     next()
   } else if (router.app.$auth.isAuthenticated()) {
     next()

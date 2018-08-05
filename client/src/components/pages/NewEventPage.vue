@@ -9,6 +9,7 @@
           form
             .form-group(v-if="event.error")
               .alert.alert-danger.p-1.pl-2.text-left {{event.error}}
+              error {{event.error}}
             .form-group
               input.form-control(type="text", name="title", id="title", placeholder="Название мероприятия", v-model.trim="event.title")
             .form-group
@@ -29,6 +30,7 @@
 import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
 import Gmap from '@/components/modules/Gmap'
+import error from '@/components/modules/Error'
 
 export default {
   name: 'NewEventPage',
@@ -45,11 +47,11 @@ export default {
   },
   components: {
     headerFixed,
-    Gmap
+    Gmap,
+    error
   },
   methods: {
     async addEvent () {
-      console.log(this.event.adress)
       if (this.event.title !== '' && this.event.description !== '' && this.event.coords) {
         await EventsServise.addNewEvent({
           title: this.event.title,

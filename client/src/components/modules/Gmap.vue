@@ -3,7 +3,9 @@
     .gmap-autocomplete__container.d-flex.mb-3(v-if="gmapAutocomplete")
       gmap-autocomplete.form-control(@place_changed="setPlace")
       button.btn.btn-success.ml-2(@click="addMarker") Добавить
-    GmapMap(:center="center"
+    beat-loader(:loading="loading")
+    GmapMap(v-if="!loading"
+            :center="center"
             :zoom="zoom"
             ref="map"
             map-type-id="roadmap"
@@ -28,6 +30,7 @@
 <script>
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import BeatLoader from 'vue-spinner/src/BeatLoader'
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -40,7 +43,7 @@ export default {
   props: ['gmapAutocomplete', 'styleMap', 'getAllEvents'],
   data () {
     return {
-      center: {lat: 45.508, lng: -73.587},
+      center: '',
       markers: [],
       places: [],
       currentPlace: null,
@@ -54,8 +57,12 @@ export default {
           width: 0,
           height: -35
         }
-      }
+      },
+      loading: true
     }
+  },
+  components: {
+    BeatLoader
   },
   methods: {
     setPlace (place) {
@@ -84,7 +91,7 @@ export default {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        console.log(this.marker)
+        this.loading = !this.loading
       })
     },
     toggleInfoWindow: function (marker, idx) {
@@ -109,5 +116,14 @@ export default {
   .gmap-container {
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .gmap-autocomplete {
+    &__container {
+      width: 100%;
+    }
   }
 </style>

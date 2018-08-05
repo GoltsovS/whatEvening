@@ -38,6 +38,7 @@ router.get('/events', (req, res) => {
   }).sort({ _id: -1 })
 })
 
+
 // get 1 event
 router.get('/events/:id', (req, res) => {
   Event.findById(req.params.id, 'title description coords user', (err, event) => {
@@ -82,4 +83,5 @@ router.delete('/events/:id', (req, res) => {
     }
   })
 })
+
 module.exports = router
