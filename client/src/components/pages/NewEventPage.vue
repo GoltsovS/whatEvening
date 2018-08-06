@@ -7,9 +7,6 @@
           h1
             | Создать мероприятие
           form
-            .form-group(v-if="event.error")
-              .alert.alert-danger.p-1.pl-2.text-left {{event.error}}
-              error {{event.error}}
             .form-group
               input.form-control(type="text", name="title", id="title", placeholder="Название мероприятия", v-model.trim="event.title")
             .form-group
@@ -18,6 +15,8 @@
               Gmap(gmapAutocomplete
                    styleMap="width:100%; height: 300px;"
                    @setCoords="onCoords")
+            .form-group(v-if="error")
+              error {{error}}
             .form-group
               button.btn.btn-block.btn-primary(type="button", name="addEvent", id="addEvent", @click="addEvent()")
                 | создать мероприятние
@@ -40,9 +39,9 @@ export default {
         title: '',
         description: '',
         adress: '',
-        coords: '',
-        error: ''
-      }
+        coords: ''
+      },
+      error: ''
     }
   },
   components: {
@@ -53,6 +52,7 @@ export default {
   methods: {
     async addEvent () {
       if (this.event.title !== '' && this.event.description !== '' && this.event.coords) {
+        this.error = ''
         await EventsServise.addNewEvent({
           title: this.event.title,
           description: this.event.description,
@@ -66,7 +66,7 @@ export default {
         })
         this.$router.push({name: 'Events'})
       } else {
-        this.event.error = 'Заполните все поля!'
+        this.error = 'Заполните все поля!'
       }
     },
     onCoords (data) {

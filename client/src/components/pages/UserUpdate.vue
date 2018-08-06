@@ -19,14 +19,14 @@
                                  name="city"
                                  id="city"
                                  placeholder="Город"
-                                 v-model.trim="user.metadata.city")
+                                 v-model.trim="metadata.city")
             .form-group
               label.label(for="adress") Адрес
               input.form-control(type="text"
                                  name="adress"
                                  id="adress"
                                  placeholder="Адрес"
-                                 v-model.trim="user.metadata.adress")
+                                 v-model.trim="metadata.adress")
             .form-group
               button.btn.btn-success.btn-block(type="button"
                                                name="updateUserProfile"
@@ -46,7 +46,9 @@ export default {
   data () {
     return {
       condition: 1,
-      user: []
+      user: [],
+      metadata: '',
+      error: ''
     }
   },
   components: {
@@ -66,14 +68,17 @@ export default {
     },
     async getToken () {
       await UserServise.getAccessToken()
+    },
+    async userMetadata () {
+      this.metadata = await this.user['http://localhost:8080/user_metadata']
     }
   },
   mounted () {
     this.getToken()
     this.user = this.$auth.user
-    this.user['metadata'] = this.user['http://localhost:8080/user_metadata']
-    delete this.user['http://localhost:8080/user_metadata']
-    console.log(this.user)
+    this.$nextTick(function () {
+      this.userMetadata()
+    })
   }
 }
 </script>

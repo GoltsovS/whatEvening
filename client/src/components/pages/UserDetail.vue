@@ -5,8 +5,7 @@
       .row
         .col-md-2
           .user__logo.mb-3(@click="updatePicture()")
-            img.user__img(:src="$auth.user.picture")
-            // input.user__file(type="file")
+            img.user__img(:src="user.picture")
         .col-md-10.text-left
           .user__tabs.btn-group.mb-3(role="group")
             button.btn.btn-secondary.user__btn(:class="{active: condition === 1}" type="button" @click="condition = 1") Персональные данные
@@ -14,16 +13,16 @@
             button.btn.btn-secondary.user__btn(:class="{active: condition === 3}" type="button" @click="condition = 3") Архив заявок
           .user__tab(v-if="condition === 1")
             h2.user__name {{user.name}}
-            .user-info
+            .user-info(v-if="metadata" v-bind="metadata")
               .user-info__wrap
                 span.user-info__label Никнейм
                 p.iser-info__text {{user.nickname}}
-              .user-info__wrap(v-if="user.metadata.city")
+              .user-info__wrap
                 span.user-info__label Город
-                p.iser-info__text {{user.metadata.city}}
-              .user-info__wrap(v-if="user.metadata.adress")
+                p.iser-info__text {{metadata.city}}
+              .user-info__wrap
                 span.user-info__label Адрес
-                p.iser-info__text {{user.metadata.adress}}
+                p.iser-info__text {{metadata.adress}}
             router-link.btn.btn-outline-info.btn-sm(:to="{name: 'UserUpdate'}")
               |редактировать профиль
           .user__tab(v-if="condition == 2")
@@ -41,7 +40,11 @@ export default {
   data () {
     return {
       condition: 1,
-      user: []
+      user: {
+        metadata: ''
+      },
+      metadata: '',
+      error: ''
     }
   },
   components: {
@@ -55,18 +58,22 @@ export default {
       }).then(response => {
         // todo: handle response
         console.log(response)
+        this.error = 'Ошибка'
       })
     },
     async getToken () {
       await UserServise.getAccessToken()
+    },
+    async userMetadata () {
+      this.metadata = await this.user['http://localhost:8080/user_metadata']
     }
   },
   mounted () {
     this.getToken()
     this.user = this.$auth.user
-    this.user['metadata'] = this.user['http://localhost:8080/user_metadata']
-    delete this.user['http://localhost:8080/user_metadata']
-    console.log(this.user)
+    this.$nextTick(function () {
+      this.userMetadata()
+    })
   }
 }
 </script>
@@ -101,17 +108,6 @@ export default {
       border-radius: 50%;
       overflow: hidden;
       cursor: pointer;
-      &:hover {
-        &:before {
-          content: 'изменить';
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background: rgba(0,0,0,0.5);
-          color: rgb(255,255,255);
-          line-height: 120px;
-        }
-      }
     }
     &-info {
       &__label {
