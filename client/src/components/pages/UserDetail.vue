@@ -17,17 +17,18 @@
               .user-info__wrap
                 span.user-info__label Никнейм
                 p.iser-info__text {{user.nickname}}
-              .user-info__wrap
+              .user-info__wrap(v-if="metadata.city")
                 span.user-info__label Город
                 p.iser-info__text {{metadata.city}}
-              .user-info__wrap
+              .user-info__wrap(v-if="metadata.adress")
                 span.user-info__label Адрес
                 p.iser-info__text {{metadata.adress}}
             router-link.btn.btn-outline-info.btn-sm(:to="{name: 'UserUpdate'}")
               |редактировать профиль
           .user__tab(v-if="condition == 2")
             h2 События
-            p Тут будут события, которые создал пользователь {{user.nickname}}
+            p Тут будут события, которые создал пользователь
+              b.pl-1 {{user.nickname}}
           .user__tab(v-if="condition == 3")
             h2 Архив заявок
 </template>

@@ -23,7 +23,6 @@ router.get('/user', (req,res) => {
       throw new Error(error)
     } else {
       authToken = JSON.parse(body).access_token
-      console.log(authToken)
       res.send(body)
     }
   })
@@ -48,8 +47,8 @@ router.post('/user', (req, res) => {
         success: true,
         message: `User update`
       })
+      console.log(response.body)
     }
-    console.log(response)
   })
 })
 module.exports = router
