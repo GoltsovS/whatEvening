@@ -7,11 +7,11 @@ This app situitable for you if you want:
 * go to the party, but you don't know best party places
 
 ## TODO:
-1 Search event, when user do marker click
-2 Add visited events for user profile
-3 Add event rating
-4 Search best practice for mobile view event page
-5 Add user rating
-6 Add popup with choise city
-7 Show events only for selected city
-8 Add some information about this APP in index page
+* Search event, when user do marker click
+* Add visited events for user profile
+* Add event rating
+* Search best practice for mobile view event page
+* Add user rating
+* Add popup with choise city
+* Show events only for selected city
+* Add some information about this APP in index page
