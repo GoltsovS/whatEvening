@@ -3,7 +3,8 @@
     headerFixed
     .events
       .events__container
-        section.panel.panel-success(v-if="events")
+        beat-loader(:loading="loading")
+        section.panel.panel-success(v-if="events && !loading")
           .event.p-1.pr-3.text-left(v-for="(event, index) in events", :key="event.title" @click="findEvent(event, index)")
             p.event__title {{event.title}}
             p.event__description {{event.description}}
@@ -17,7 +18,7 @@
             | На данный момент нет мероприятий... Создайте своё
           div
             router-link(:to="{name: 'NewEvent'}")
-              | add new event
+              | Добавить мероприятие
       .events__map
         Gmap(styleMap="width:100%; height: 100%;"
              :getAllEvents="events")
@@ -26,6 +27,8 @@
 <script>
 import headerFixed from '@/components/modules/header'
 import EventsServise from '@/services/EventsServise'
+import {mapState, mapActions} from 'vuex'
+import BeatLoader from 'vue-spinner/src/BeatLoader'
 import Gmap from '@/components/modules/Gmap'
 import Icon from 'vue-awesome'
 
@@ -33,19 +36,20 @@ export default {
   name: 'EventsPage',
   data () {
     return {
-      events: []
+      loading: true
     }
   },
   components: {
     headerFixed,
+    BeatLoader,
     Gmap,
     Icon
   },
   methods: {
-    async getEvents () {
-      const responce = await EventsServise.fetchEvents()
-      this.events = responce.data.events
-    },
+    // async getEvents () {
+    //   const responce = await EventsServise.fetchEvents()
+    //   this.events = responce.data.events
+    // },
     async removeEvent (value) {
       await EventsServise.deleteEvent(value)
       this.getEvents()
@@ -53,10 +57,21 @@ export default {
     findEvent: function (event, index) {
       // todo: передавать индекс в Gmap для смещения центра на карте при клике по событию
       console.log(this.events[index])
-    }
+    },
+    ...mapActions('events', {
+      getEvents: 'getEvents'
+    })
   },
-  mounted () {
+  computed: {
+    ...mapState({
+      events: state => state.events.items
+    })
+  },
+  created () {
     this.getEvents()
+      .then(() => {
+        this.loading = false
+      })
   }
 }
 </script>

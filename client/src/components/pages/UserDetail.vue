@@ -4,7 +4,7 @@
     .user.container.mt-3
       .row
         .col-md-2
-          .user__logo.mb-3(@click="updatePicture()")
+          .user__logo.mb-3
             img.user__img(:src="user.picture")
         .col-md-10.text-left
           .user__tabs.btn-group.mb-3(role="group")
@@ -52,16 +52,6 @@ export default {
     headerFixed
   },
   methods: {
-    async updatePicture () {
-      await UserServise.updateUserPicture({
-        picture: {'user_metadata': {'picture': 'https://hashflare.io/img/sm-200x200.jpg'}},
-        userId: this.$auth.user.sub
-      }).then(response => {
-        // todo: handle response
-        console.log(response)
-        this.error = 'Ошибка'
-      })
-    },
     async getToken () {
       await UserServise.getAccessToken()
     },
