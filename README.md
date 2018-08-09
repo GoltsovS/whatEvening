@@ -7,6 +7,7 @@ This app situitable for you if you want:
 * go to the party, but you don't know best party places
 
 ## TODO:
+* Add Vuex
 * Search event, when user do marker click
 * Add visited events for user profile
 * Add event rating

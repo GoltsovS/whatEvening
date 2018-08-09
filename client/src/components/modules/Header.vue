@@ -1,11 +1,11 @@
 <template lang="pug">
   .header-fixed
     nav.navbar.navbar-expand-sm.navbar-light.bg-faded
-      button.navbar-toggler(type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Toggle navigation")
+      button.navbar-toggler(type="button" @click="toggleMobileMenu()")
         span.navbar-toggler-icon
-      router-link.navbar-brand( :to="{ name: 'Start' }")
+      router-link.navbar-brand(:to="{ name: 'Start' }")
         |WhatEvening
-      .collapse.navbar-collapse#nav-content
+      .navbar-collapse#nav-content(v-bind:class="{ collapse: !menuActive }")
         ul.navbar-nav.ml-auto
           li.nav-item
             router-link( :to="{ name: 'NewEvent' }")
@@ -15,7 +15,6 @@
             router-link( :to="{ name: 'Events' }")
               icon(name="map-marker-alt")
               | перейти к событиям
-          li.nav-item.ml-3
           li.nav-item.nav-item__user(v-if="$auth.isAuthenticated()")
             span.nav-item__name {{$auth.user.nickname}}
             img.nav-item__logo(:src="$auth.user.picture")
@@ -41,6 +40,16 @@ export default {
   name: 'Header',
   components: {
     Icon
+  },
+  data () {
+    return {
+      menuActive: false
+    }
+  },
+  methods: {
+    toggleMobileMenu () {
+      this.menuActive = !this.menuActive
+    }
   }
 }
 </script>
@@ -50,6 +59,12 @@ export default {
     background: #545b62;
   }
   .nav-item {
+    @media (max-width: 575px) {
+      padding: 5px 0;
+      &:first-of-type {
+        padding-top: 10px;
+      }
+    }
     &__logo {
       border-radius: 50%;
       max-height: 20px;
