@@ -81,7 +81,7 @@ export default {
       width: 60%;
       @media (max-width: 992px) {
         width: 100%;
-        height: 400px;
+        height: calc(100% - 130px);
       }
     }
   }
