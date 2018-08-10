@@ -5,13 +5,16 @@
       .events__container
         beat-loader(:loading="loading")
         section.panel.panel-success(v-if="events && !loading")
-          .event.p-1.pr-3.text-left(v-for="(event, index) in events", :key="event.title" @click="findEvent(event, index)")
+          .event.p-1.pr-3.text-left(v-for="(event, index) in events"
+                                    :key="event.title"
+                                    @click="setCurrentEvent(event)")
             p.event__title {{event.title}}
             p.event__description {{event.description}}
             .event__nav.text-right(v-if="$auth.user.sub && ($auth.user.sub === event.user.id)")
               router-link.btn.btn-secondary.btn-sm.event__edit(:to="{name: 'EditEvent', params: {id: event._id}}")
                 icon(name="edit")
-              button.btn.btn-danger.btn-sm.event__remove(type="button", @click="removeEvent(event._id)")
+              button.btn.btn-danger.btn-sm.event__remove(type="button"
+                                                         @click="removeEvent(event._id)")
                 icon(name="times")
         section.panel.panel-danger(v-if="events.length == '0'")
           p
@@ -46,20 +49,12 @@ export default {
     Icon
   },
   methods: {
-    // async getEvents () {
-    //   const responce = await EventsServise.fetchEvents()
-    //   this.events = responce.data.events
-    // },
     async removeEvent (value) {
       await EventsServise.deleteEvent(value)
-      this.getEvents()
-    },
-    findEvent: function (event, index) {
-      // todo: передавать индекс в Gmap для смещения центра на карте при клике по событию
-      console.log(this.events[index])
     },
     ...mapActions('events', {
-      getEvents: 'getEvents'
+      getEvents: 'getEvents',
+      setCurrentEvent: 'setCurrentEvent'
     })
   },
   computed: {

@@ -3,7 +3,8 @@ import EventsServise from '@/services/EventsServise'
 export default {
   namespaced: true,
   state: {
-    items: []
+    items: [],
+    currentEvent: []
   },
   getters: {
 
@@ -11,6 +12,9 @@ export default {
   mutations: {
     setEvents (state, events) {
       state.items = events
+    },
+    setCurrentEvent (state, event) {
+      state.currentEvent = event
     }
   },
   actions: {
@@ -18,6 +22,9 @@ export default {
       let responce = await EventsServise.fetchEvents()
       let events = responce.data.events
       commit('setEvents', events)
+    },
+    setCurrentEvent ({commit}, event) {
+      commit('setCurrentEvent', event)
     }
   }
 }
