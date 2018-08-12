@@ -38,6 +38,7 @@ router.post('/user', (req, res) => {
     body: { user_metadata: { city: req.body.city, adress: req.body.adress } },
     json: true
   }
+  console.log(options)
 
   request(options, function (error, response, body) {
     if (error) {
@@ -47,7 +48,7 @@ router.post('/user', (req, res) => {
         success: true,
         message: `User update`
       })
-      console.log(response.body)
+      console.log('отправил')
     }
   })
 })

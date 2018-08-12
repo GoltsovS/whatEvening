@@ -35,36 +35,30 @@
 
 <script>
 import headerFixed from '@/components/modules/header'
-import UserServise from '@/services/UserServise'
+import {mapState, mapGetters} from 'vuex'
+
 export default {
   name: 'UserDetail',
   data () {
     return {
       condition: 1,
-      user: {
-        metadata: ''
-      },
-      metadata: '',
       error: ''
     }
   },
   components: {
     headerFixed
   },
-  methods: {
-    async getToken () {
-      await UserServise.getAccessToken()
-    },
-    async userMetadata () {
-      this.metadata = await this.user['http://localhost:8080/user_metadata']
-    }
-  },
-  mounted () {
-    this.getToken()
-    this.user = this.$auth.user
-    this.$nextTick(function () {
-      this.userMetadata()
+  computed: {
+    ...mapState({
+      user: state => state.user.data
+    }),
+    ...mapGetters({
+      metadata: 'user/getMetadata'
     })
+  },
+  created () {
+    let data = this.$auth.user
+    this.$store.dispatch('user/getUserData', data)
   }
 }
 </script>

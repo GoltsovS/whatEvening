@@ -7,26 +7,19 @@
           h1 Редактировать пользовательские данные
           form.text-left
             .form-group
-              label.label(for="nickName") Никнейм
-              input.form-control(type="text"
-                                 name="nickName"
-                                 id="nickName"
-                                 placeholder="Никнейм"
-                                 v-model.trim="user.nickname")
-            .form-group
               label.label(for="city") Город
               input.form-control(type="text"
                                  name="city"
                                  id="city"
                                  placeholder="Город"
-                                 v-model.trim="metadata.city")
+                                 :value="metadata.city")
             .form-group
               label.label(for="adress") Адрес
               input.form-control(type="text"
                                  name="adress"
                                  id="adress"
                                  placeholder="Адрес"
-                                 v-model.trim="metadata.adress")
+                                 :value="metadata.adress")
             .form-group
               button.btn.btn-success.btn-block(type="button"
                                                name="updateUserProfile"
@@ -41,13 +34,13 @@
 <script>
 import headerFixed from '@/components/modules/header'
 import UserServise from '@/services/UserServise'
+import {mapState, mapActions} from 'vuex'
+
 export default {
   name: 'UserUpdate',
   data () {
     return {
       condition: 1,
-      user: [],
-      metadata: '',
       error: ''
     }
   },
@@ -55,30 +48,20 @@ export default {
     headerFixed
   },
   methods: {
-    async updateProfile () {
-      await UserServise.updateUserProfile({
-        city: this.city,
-        adress: this.adress,
-        userId: this.$auth.user.sub
-      }).then(response => {
-        if (response.data.success) {
-          this.$router.push({name: 'UserDetail'})
-        }
-      })
-    },
+    ...mapActions('user', {
+      updateProfile: 'updateProfile'
+    }),
     async getToken () {
       await UserServise.getAccessToken()
-    },
-    async userMetadata () {
-      this.metadata = await this.user['http://localhost:8080/user_metadata']
     }
   },
-  mounted () {
-    this.getToken()
-    this.user = this.$auth.user
-    this.$nextTick(function () {
-      this.userMetadata()
+  computed: {
+    ...mapState({
+      metadata: state => state.user.metadata
     })
+  },
+  created () {
+    this.getToken()
   }
 }
 </script>
