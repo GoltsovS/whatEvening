@@ -12,14 +12,16 @@
                                  name="city"
                                  id="city"
                                  placeholder="Город"
-                                 :value="metadata.city")
+                                 :value="this.metadata.city"
+                                 @input="updateCityStore")
             .form-group
               label.label(for="adress") Адрес
               input.form-control(type="text"
                                  name="adress"
                                  id="adress"
                                  placeholder="Адрес"
-                                 :value="metadata.adress")
+                                 :value="this.metadata.adress"
+                                 @input="updateAdressStore")
             .form-group
               button.btn.btn-success.btn-block(type="button"
                                                name="updateUserProfile"
@@ -34,7 +36,7 @@
 <script>
 import headerFixed from '@/components/modules/header'
 import UserServise from '@/services/UserServise'
-import {mapState, mapActions} from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   name: 'UserUpdate',
@@ -48,11 +50,27 @@ export default {
     headerFixed
   },
   methods: {
-    ...mapActions('user', {
-      updateProfile: 'updateProfile'
-    }),
     async getToken () {
       await UserServise.getAccessToken()
+    },
+    async updateProfile () {
+      // You can see changes only in next login.
+      // todo: add method for update authResult.idTokenPayload
+      await UserServise.updateUserProfile({
+        city: this.$store.state.user.metadata.city,
+        adress: this.$store.state.user.metadata.adress,
+        userId: this.$store.state.user.data.sub
+      })
+        // add alert to UserDetail, and error handler
+        .then(result => {
+          this.$router.push({name: 'UserDetail'})
+        })
+    },
+    updateCityStore (e) {
+      this.$store.commit('user/updateCity', e.target.value)
+    },
+    updateAdressStore (e) {
+      this.$store.commit('user/updateAdress', e.target.value)
     }
   },
   computed: {

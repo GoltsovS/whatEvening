@@ -1,4 +1,3 @@
-import UserServise from '@/services/UserServise'
 
 export default {
   namespaced: true,
@@ -20,6 +19,12 @@ export default {
     },
     setMetadata (state, metadata) {
       state.metadata = metadata
+    },
+    updateCity (state, city) {
+      state.metadata.city = city
+    },
+    updateAdress (state, adress) {
+      state.metadata.adress = adress
     }
   },
   actions: {
@@ -28,18 +33,6 @@ export default {
     },
     setMetadata ({commit}, metadata) {
       commit('setMetadata', metadata)
-    },
-    async updateProfile ({commit}) {
-      console.log(this.state.user)
-      let data = await UserServise.updateUserProfile({
-        city: this.state.user.metadata.city,
-        adress: this.state.user.metadata.adress,
-        userId: this.state.user.data.sub
-      }).then(responce => {
-        if (responce.data.success) {
-          commit('setMetadata', data)
-        }
-      })
     }
   }
 }

@@ -30,7 +30,6 @@ router.get('/user', (req,res) => {
 
 // send metadata to Auth0
 router.post('/user', (req, res) => {
-  console.log('Токен: ' + authToken)
   var options = { method: 'PATCH',
     url: 'https://' + process.env.AUTH_API_URL + '/api/v2/users/' + req.body.userId,
     headers: { 'content-type': 'application/json',
@@ -48,7 +47,6 @@ router.post('/user', (req, res) => {
         success: true,
         message: `User update`
       })
-      console.log('отправил')
     }
   })
 })
