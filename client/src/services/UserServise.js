@@ -1,10 +1,19 @@
-import api from '@/services/api'
+import api from './api'
 
 export default {
-  getAccessToken () {
-    return api().get('user/')
+  signUp (params) {
+    return api().post('register', params)
+  },
+  signIn (params) {
+    return api().post('login', params)
+  },
+  signOut () {
+    return api().get('logout')
+  },
+  getPersonInfo () {
+    return api().get('user')
   },
   updateUserProfile (params) {
-    return api().post('/user', params)
+    return api().put('user', params)
   }
 }

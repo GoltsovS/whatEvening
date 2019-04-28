@@ -1,32 +1,51 @@
 <template lang="pug">
   .wrapper
     headerFixed
-    .container
-      .row.justify-content-center
+    .container.h-100
+      .row.justify-content-center.align-items-center.h-100
         .col-md-6
           h1 Редактировать пользовательские данные
           form.text-left
             .form-group
+              label.label(for="adress") Имя
+              input.form-control(
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Имя"
+                v-model.trim="user.name")
+            .form-group
+              label.label(for="adress") Почта
+              input.form-control(
+                type="text"
+                name="email"
+                id="email"
+                placeholder="Почта"
+                v-model.trim="user.email")
+            .form-group
               label.label(for="city") Город
-              input.form-control(type="text"
-                                 name="city"
-                                 id="city"
-                                 placeholder="Город"
-                                 :value="this.metadata.city"
-                                 @input="updateCityStore")
+              input.form-control(
+                type="text"
+                name="city"
+                id="city"
+                placeholder="Город"
+                v-model.trim="data.city")
             .form-group
               label.label(for="adress") Адрес
-              input.form-control(type="text"
-                                 name="adress"
-                                 id="adress"
-                                 placeholder="Адрес"
-                                 :value="this.metadata.adress"
-                                 @input="updateAdressStore")
+              input.form-control(
+                type="text"
+                name="adress"
+                id="adress"
+                placeholder="Адрес"
+                v-model.trim="data.adress")
+            .form-group(v-if="error")
+              error {{error}}
             .form-group
-              button.btn.btn-success.btn-block(type="button"
-                                               name="updateUserProfile"
-                                               id="updateUserProfile"
-                                               @click="updateProfile()")
+              button.btn.btn-success.btn-block(
+                type="button"
+                name="updateUserProfile"
+                id="updateUserProfile"
+                @click="updateProfile()")
                 |Сохранить изменения
             .form-group
               router-link.btn.btn-outline-danger.btn-block(:to="{ name: 'UserDetail'}")
@@ -37,49 +56,46 @@
 import headerFixed from '@/components/modules/header'
 import UserServise from '@/services/UserServise'
 import {mapState} from 'vuex'
+import error from '@/components/modules/Error'
 
 export default {
   name: 'UserUpdate',
   data () {
     return {
-      condition: 1,
-      error: ''
+      data: {
+        city: '',
+        adress: ''
+      },
+      error: false
     }
   },
   components: {
-    headerFixed
+    headerFixed,
+    error
   },
   methods: {
-    async getToken () {
-      await UserServise.getAccessToken()
-    },
     async updateProfile () {
-      // You can see changes only in next login.
-      // todo: add method for update authResult.idTokenPayload
       await UserServise.updateUserProfile({
-        city: this.$store.state.user.metadata.city,
-        adress: this.$store.state.user.metadata.adress,
-        userId: this.$store.state.user.data.sub
+        city: this.data.city,
+        adress: this.data.adress,
+        userId: this.$store.state.user.data._id
       })
-        // add alert to UserDetail, and error handler
-        .then(result => {
-          this.$router.push({name: 'UserDetail'})
+        .then(res => {
+          if (res.data.success) {
+            this.$router.push({name: 'UserDetail'})
+          } else {
+            this.error = res.data.message
+          }
         })
-    },
-    updateCityStore (e) {
-      this.$store.commit('user/updateCity', e.target.value)
-    },
-    updateAdressStore (e) {
-      this.$store.commit('user/updateAdress', e.target.value)
+        .catch(error => {
+          this.error = error.response.data.message
+        })
     }
   },
   computed: {
     ...mapState({
-      metadata: state => state.user.metadata
+      user: state => state.user.data
     })
-  },
-  created () {
-    this.getToken()
   }
 }
 </script>

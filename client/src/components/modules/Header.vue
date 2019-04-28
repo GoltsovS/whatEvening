@@ -6,7 +6,7 @@
       router-link.navbar-brand(:to="{ name: 'Start' }")
         |WhatEvening
       .navbar-collapse#nav-content(v-bind:class="{ collapse: !menuActive }")
-        ul.navbar-nav.ml-auto
+        ul.navbar-nav.ml-auto.align-items-center
           li.nav-item
             router-link( :to="{ name: 'NewEvent' }")
               icon(name='plus')
@@ -15,26 +15,24 @@
             router-link( :to="{ name: 'Events' }")
               icon(name="map-marker-alt")
               | перейти к событиям
-          li.nav-item.nav-item__user(v-if="$auth.isAuthenticated()")
-            span.nav-item__name {{$auth.user.nickname}}
-            img.nav-item__logo(:src="$auth.user.picture")
-            .user-menu
-              router-link.btn.user-menu__btn.btn-block.btn-primary(:to="{ name: 'UserDetail'}")
+          li.nav-item.nav-item__user(v-if="isAuth")
+            router-link.nav-item__name(:to="{ name: 'UserDetail'}")
                 icon(name="user")
-                | Кабинет
-              button.btn.user-menu__btn.btn-block.btn-outline-warning(@click="$auth.logout()")
+                | {{user.name}}
+            button.nav-item__btn(@click="logout()")
                 icon(name="sign-out-alt")
-                | Выйти
           li.nav-item.ml-3(v-else)
-            router-link(:to="{ name: 'UserDetail'}")
+            router-link(:to="{ name: 'SignIn'}")
               |Войти
             span.pl-1.pr-1 |
-            router-link(:to="{ name: 'UserDetail'}")
-              | Зарегитрироваться
+            router-link(:to="{ name: 'SignUp'}")
+              |Зарегитрироваться
 </template>
 
 <script>
 import Icon from 'vue-awesome'
+import { mapState, mapActions, mapGetters } from 'vuex'
+import UserService from '@/services/UserServise'
 
 export default {
   name: 'Header',
@@ -47,9 +45,25 @@ export default {
     }
   },
   methods: {
+    logout () {
+      UserService.signOut()
+      this.$store.dispatch('user/setAuth', false)
+      this.$router.push({name: 'Start'})
+    },
     toggleMobileMenu () {
       this.menuActive = !this.menuActive
-    }
+    },
+    ...mapActions('user', {
+      getUserData: 'getUserData'
+    })
+  },
+  computed: {
+    ...mapState({
+      user: state => state.user.data
+    }),
+    ...mapGetters({
+      isAuth: 'user/isAuthenticated'
+    })
   }
 }
 </script>
@@ -65,12 +79,6 @@ export default {
         padding-top: 10px;
       }
     }
-    &__logo {
-      border-radius: 50%;
-      max-height: 20px;
-      max-width: 20px;
-      vertical-align: middle;
-    }
     &__name {
       margin-right: 5px;
       color: white;
@@ -79,25 +87,11 @@ export default {
     &__user {
       min-width: 150px;
       position: relative;
-      &:hover {
-        background: white;
-        border-radius: 5px 5px 0 0;
-        .nav-item__name {
-          color: black;
-        }
-        .user-menu {
-          width: 100%;
-          display: block;
-          position: absolute;
-          top: 25px;
-          right: 0;
-          background: white;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-top: none;
-          border-radius: 0 0 5px 5px;
-        }
-      }
+    }
+    &__btn {
+      background: transparent;
+      border: none;
+      color: white;
     }
     a {
       color: rgb(255,255,255);

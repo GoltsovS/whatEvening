@@ -12,9 +12,9 @@ export default {
     BeatLoader
   },
   mounted () {
-    this.$auth.handleAuthentication().then((data) => {
-      this.$router.push({name: 'Events'})
-    })
+    // this.$auth.handleAuthentication().then((data) => {
+    //   this.$router.push({name: 'Events'})
+    // })
   }
 }
 </script>

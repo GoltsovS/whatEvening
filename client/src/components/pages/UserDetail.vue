@@ -9,20 +9,23 @@
         .col-md-10.text-left
           .user__tabs.btn-group.mb-3(role="group")
             button.btn.btn-secondary.user__btn(:class="{active: condition === 1}" type="button" @click="condition = 1") Персональные данные
-            button.btn.btn-secondary.user__btn(:class="{active: condition === 2}" type="button" @click="condition = 2") Созданные мероприятия
+            button.btn.btn-secondary.user__btn(:class="{active: condition === 2}" type="button" @click="condition = 2") Активные мероприятия
             button.btn.btn-secondary.user__btn(:class="{active: condition === 3}" type="button" @click="condition = 3") Архив заявок
           .user__tab(v-if="condition === 1")
             h2.user__name {{user.name}}
-            .user-info(v-if="metadata" v-bind="metadata")
+            .user-info(v-if="user")
               .user-info__wrap
                 span.user-info__label Никнейм
-                p.iser-info__text {{user.nickname}}
-              .user-info__wrap(v-if="metadata.city")
+                p.user-info__text {{user.name}}
+              .user-info__wrap(v-if="user.city")
                 span.user-info__label Город
-                p.iser-info__text {{metadata.city}}
-              .user-info__wrap(v-if="metadata.adress")
+                p.iser-info__text {{user.city}}
+              .user-info__wrap
+                span.user-info__label Почта
+                p.user-info__text {{user.email}}
+              .user-info__wrap(v-if="user.adress")
                 span.user-info__label Адрес
-                p.iser-info__text {{metadata.adress}}
+                p.iser-info__text {{user.adress}}
             router-link.btn.btn-outline-info.btn-sm(:to="{name: 'UserUpdate'}")
               |редактировать профиль
           .user__tab(v-if="condition == 2")
@@ -35,7 +38,7 @@
 
 <script>
 import headerFixed from '@/components/modules/header'
-import {mapState, mapGetters} from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   name: 'UserDetail',
@@ -51,9 +54,6 @@ export default {
   computed: {
     ...mapState({
       user: state => state.user.data
-    }),
-    ...mapGetters({
-      metadata: 'user/getMetadata'
     })
   },
   created () {

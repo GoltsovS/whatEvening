@@ -1,38 +1,32 @@
+import UserServise from '@/services/UserServise'
 
 export default {
   namespaced: true,
   state: {
-    data: [],
-    metadata: {
-      city: '',
-      adress: ''
-    }
+    data: {},
+    isAuth: false
   },
   getters: {
-    getMetadata (state) {
-      return state.data['http://localhost:8080/user_metadata']
+    isAuthenticated (state) {
+      return state.isAuth
     }
   },
   mutations: {
-    setUserData (state, data) {
-      state.data = data
+    setUserData (state, userData) {
+      state.data = userData
     },
-    setMetadata (state, metadata) {
-      state.metadata = metadata
-    },
-    updateCity (state, city) {
-      state.metadata.city = city
-    },
-    updateAdress (state, adress) {
-      state.metadata.adress = adress
+    setAuth (state, isAuth) {
+      state.isAuth = isAuth
     }
   },
   actions: {
-    getUserData ({commit}, data) {
-      commit('setUserData', data)
+    async getUserData ({commit}) {
+      let responce = await UserServise.getPersonInfo()
+      let userData = responce.data
+      commit('setUserData', userData)
     },
-    setMetadata ({commit}, metadata) {
-      commit('setMetadata', metadata)
+    setAuth ({commit}, auth) {
+      commit('setAuth', auth)
     }
   }
 }

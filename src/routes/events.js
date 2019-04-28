@@ -3,7 +3,7 @@ const router = express.Router()
 const Event = require('../models/event-model')
 
 // save event
-router.post('/events', (req, res) => {
+router.post('/api/events', (req, res) => {
   const event = new Event({
     title: req.body.title,
     description: req.body.description,
@@ -28,7 +28,7 @@ router.post('/events', (req, res) => {
 })
 
 // get events
-router.get('/events', (req, res) => {
+router.get('/api/events', (req, res) => {
   Event.find({}, 'title description coords user', (err, events) => {
     if (err) {
       res.sendStatus(500)
@@ -40,7 +40,7 @@ router.get('/events', (req, res) => {
 
 
 // get 1 event
-router.get('/events/:id', (req, res) => {
+router.get('/api/events/:id', (req, res) => {
   Event.findById(req.params.id, 'title description coords user', (err, event) => {
     if (err) {
       res.sendStatus(500)
@@ -51,7 +51,7 @@ router.get('/events/:id', (req, res) => {
 })
 
 // update 1 event
-router.put('/events/:id', (req, res) => {
+router.put('/api/events/:id', (req, res) => {
   Event.findById(req.params.id, 'title description', (err, event) => {
     if (err) {
       console.log(err)
@@ -74,7 +74,7 @@ router.put('/events/:id', (req, res) => {
 })
 
 // delete event
-router.delete('/events/:id', (req, res) => {
+router.delete('/api/events/:id', (req, res) => {
   Event.remove({_id: req.params.id}, err => {
     if (err) {
       res.sendStatus(500)

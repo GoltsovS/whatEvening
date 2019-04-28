@@ -2,7 +2,19 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const UserSchema = new Schema ({
-  access_token: {
+  name: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  password: {
+    type: String
+  },
+  city: {
+    type: String
+  },
+  adress: {
     type: String
   }
 })

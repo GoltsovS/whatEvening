@@ -6,7 +6,9 @@ import router from './router'
 import '@/plugins/bootstrap'
 import store from '@/store/index'
 import auth from '@/auth/AuthServise'
+import VueCookie from 'vue-cookie'
 
+Vue.use(VueCookie)
 Vue.use(auth)
 
 Vue.config.productionTip = false

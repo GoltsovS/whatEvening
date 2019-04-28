@@ -1,4 +1,5 @@
 module.exports = {
     port: 8081,
-    dbOptions: { useMongoclient: true }
+    dbOptions: { useMongoclient: true },
+    'secret': 'supersecret'
 }

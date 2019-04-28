@@ -10,7 +10,7 @@
                                     @click="setCurrentEvent(event)")
             p.event__title {{event.title}}
             p.event__description {{event.description}}
-            .event__nav.text-right(v-if="$auth.user.sub && ($auth.user.sub === event.user.id)")
+            .event__nav.text-right(v-if="true && (true === event.user.id)")
               router-link.btn.btn-secondary.btn-sm.event__edit(:to="{name: 'EditEvent', params: {id: event._id}}")
                 icon(name="edit")
               button.btn.btn-danger.btn-sm.event__remove(type="button"

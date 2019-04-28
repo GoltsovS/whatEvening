@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '@/store/index'
 import Router from 'vue-router'
 import Start from '@/components/pages/StartPage'
 import Events from '@/components/pages/EventsPage'
@@ -6,6 +7,8 @@ import NewEvent from '@/components/pages/NewEventPage'
 import EditEvent from '@/components/pages/EditEventPage'
 import UserDetail from '@/components/pages/UserDetail'
 import UserUpdate from '@/components/pages/UserUpdate'
+import SignUp from '@/components/pages/SignUpPage'
+import SignIn from '@/components/pages/SignInPage'
 import Callback from '@/components/Callback'
 
 Vue.use(Router)
@@ -21,17 +24,26 @@ const router = new Router({
     {
       path: '/events',
       name: 'Events',
-      component: Events
+      component: Events,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/events/new',
       name: 'NewEvent',
-      component: NewEvent
+      component: NewEvent,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/events/:id',
       name: 'EditEvent',
-      component: EditEvent
+      component: EditEvent,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/callback',
@@ -39,25 +51,46 @@ const router = new Router({
       component: Callback
     },
     {
-      path: '/userDetail',
+      path: '/user/detail',
       name: 'UserDetail',
-      component: UserDetail
+      component: UserDetail,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/userUpdate',
+      path: '/user/update',
       name: 'UserUpdate',
-      component: UserUpdate
+      component: UserUpdate,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/signup',
+      name: 'SignUp',
+      component: SignUp
+    },
+    {
+      path: '/signin',
+      name: 'SignIn',
+      component: SignIn
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'UserDetail' && to.name !== 'Events' && to.name !== 'NewEvent' && to.name !== 'EditEvent') {
-    next()
-  } else if (router.app.$auth.isAuthenticated()) {
-    next()
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.state.user.isAuth) {
+      next({
+        path: '/signin',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
   } else {
-    router.app.$auth.login()
+    next()
   }
 })
 
