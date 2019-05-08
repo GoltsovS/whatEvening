@@ -31,6 +31,7 @@
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import BeatLoader from 'vue-spinner/src/BeatLoader'
+import { mapState } from 'vuex'
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -98,17 +99,22 @@ export default {
       this.infoWindowPos = marker.coords
       this.infoContent = marker.title + ': ' + marker.description
 
-      if (this.currentMidx === idx) {
-        this.infoWinOpen = !this.infoWinOpen
-      } else {
+      if (idx === 'undefined' || this.currentMidx !== idx) {
         this.infoWinOpen = true
+      } else {
+        this.infoWinOpen = !this.infoWinOpen
         this.currentMidx = idx
       }
     }
   },
   mounted () {
     this.geolocate()
-  }
+    this.$store.watch(
+      (state, getters) => getters['events/currentEvent'],
+      (newEvent, oldEvent) => this.toggleInfoWindow(newEvent)
+    )
+  },
+  computed: mapState(['events/currentEvent'])
 }
 </script>
 

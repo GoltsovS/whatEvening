@@ -7,7 +7,9 @@ export default {
     currentEvent: []
   },
   getters: {
-
+    currentEvent (state) {
+      return state.currentEvent
+    }
   },
   mutations: {
     setEvents (state, events) {

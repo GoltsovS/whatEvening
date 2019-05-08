@@ -5,17 +5,19 @@
       .events__container
         beat-loader(:loading="loading")
         section.panel.panel-success(v-if="events && !loading")
-          .event.p-1.pr-3.text-left(v-for="(event, index) in events"
-                                    :key="event.title"
-                                    @click="setCurrentEvent(event)")
-            p.event__title {{event.title}}
-            p.event__description {{event.description}}
-            .event__nav.text-right(v-if="true && (true === event.user.id)")
-              router-link.btn.btn-secondary.btn-sm.event__edit(:to="{name: 'EditEvent', params: {id: event._id}}")
-                icon(name="edit")
-              button.btn.btn-danger.btn-sm.event__remove(type="button"
-                                                         @click="removeEvent(event._id)")
+          .event.p-1.pr-1.text-left(
+            v-for="(event, index) in events"
+            :key="event.title"
+            @click="setCurrentEvent(event)")
+            .event__info
+              p.event__title {{event.title}}
+              p.event__description {{event.description}}
+            .event__nav.d-flex.flex-column.justify-content-start.p-1(v-if="user._id === event.user.id")
+              button.event__remove(type="button"
+                @click="removeEvent(event._id)")
                 icon(name="times")
+              router-link.event__edit(:to="{name: 'EditEvent', params: {id: event._id}}")
+                icon(name="edit")
         section.panel.panel-danger(v-if="events.length == '0'")
           p
             | На данный момент нет мероприятий... Создайте своё
@@ -59,7 +61,8 @@ export default {
   },
   computed: {
     ...mapState({
-      events: state => state.events.items
+      events: state => state.events.items,
+      user: state => state.user.data
     })
   },
   created () {
@@ -101,20 +104,34 @@ export default {
     position: relative;
     background: rgb(255,255,255);
     border-bottom: 2px solid rgb(230,230,230);
+    display: flex;
+    flex-direction: row;
     cursor: pointer;
     &__description {
       font-size: .7rem;
     }
     &__edit {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
+      color: var(--white);
+      &:hover {
+        color: var(--green);
+      }
+    }
+    &__info {
+      flex-grow: 1;
+    }
+    &__nav {
+      background: #545b62;
+      margin: -0.25rem -0.25rem -0.25rem 0;
     }
     &__remove {
-      width: 34px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
+      width: 16px;
+      color: var(--white);
+      background: transparent;
+      border: none;
+      padding: 0;
+      &:hover {
+        color: var(--red);
+      }
     }
     &__title {
       font-weight: bold;

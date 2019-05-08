@@ -22,5 +22,8 @@ let auth = new Vue({
 export default {
   install: function (Vue) {
     Vue.prototype.$auth = auth
+  },
+  isAuth: () => {
+    return auth.isAuthenticated()
   }
 }

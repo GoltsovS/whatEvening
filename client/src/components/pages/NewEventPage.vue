@@ -61,7 +61,7 @@ export default {
             lng: this.event.coords.lng
           },
           user: {
-            id: this.$auth.user.sub
+            id: this.$store.state.user.data._id
           }
         })
         this.$router.push({name: 'Events'})

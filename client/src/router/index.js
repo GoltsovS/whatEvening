@@ -10,6 +10,7 @@ import UserUpdate from '@/components/pages/UserUpdate'
 import SignUp from '@/components/pages/SignUpPage'
 import SignIn from '@/components/pages/SignInPage'
 import Callback from '@/components/Callback'
+import AuthServise from '@/auth/AuthServise'
 
 Vue.use(Router)
 
@@ -78,15 +79,15 @@ const router = new Router({
     }
   ]
 })
-
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.state.user.isAuth) {
+    if (!store.state.user.isAuth && AuthServise.isAuth() === null) {
       next({
         path: '/signin',
         query: { redirect: to.fullPath }
       })
     } else {
+      store.dispatch('user/setAuth', true)
       next()
     }
   } else {
