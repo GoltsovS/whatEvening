@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import UserService from '@/services/UserServise'
+import UserService from '@/services/UserService'
 
 let auth = new Vue({
   methods: {

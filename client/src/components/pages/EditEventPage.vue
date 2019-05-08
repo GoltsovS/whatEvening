@@ -30,7 +30,7 @@
 
 <script>
 import headerFixed from '@/components/modules/header'
-import EventsServise from '@/services/EventsServise'
+import EventsService from '@/services/EventsService'
 export default {
   name: 'EditEventPage',
   components: {
@@ -46,13 +46,13 @@ export default {
   },
   methods: {
     async getEvent () {
-      const response = await EventsServise.getEvent({id: this.$route.params.id})
+      const response = await EventsService.getEvent({id: this.$route.params.id})
       this.event.title = response.data.title
       this.event.description = response.data.description
     },
     async editEvent () {
       if (this.event.title !== '' && this.event.description !== '') {
-        await EventsServise.updateEvent({
+        await EventsService.updateEvent({
           id: this.$route.params.id,
           title: this.event.title,
           description: this.event.description

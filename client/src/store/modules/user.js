@@ -1,4 +1,4 @@
-import UserServise from '@/services/UserServise'
+import UserService from '@/services/UserService'
 
 export default {
   namespaced: true,
@@ -21,7 +21,7 @@ export default {
   },
   actions: {
     async getUserData ({commit}) {
-      let responce = await UserServise.getPersonInfo()
+      let responce = await UserService.getPersonInfo()
       let userData = responce.data
       commit('setUserData', userData)
     },

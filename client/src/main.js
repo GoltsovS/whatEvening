@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import '@/plugins/bootstrap'
 import store from '@/store/index'
-import auth from '@/auth/AuthServise'
+import auth from '@/auth/AuthService'
 import VueCookie from 'vue-cookie'
 
 Vue.use(VueCookie)

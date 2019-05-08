@@ -27,7 +27,7 @@
 
 <script>
 import headerFixed from '@/components/modules/header'
-import EventsServise from '@/services/EventsServise'
+import EventsService from '@/services/EventsService'
 import Gmap from '@/components/modules/Gmap'
 import error from '@/components/modules/Error'
 
@@ -53,7 +53,7 @@ export default {
     async addEvent () {
       if (this.event.title !== '' && this.event.description !== '' && this.event.coords) {
         this.error = ''
-        await EventsServise.addNewEvent({
+        await EventsService.addNewEvent({
           title: this.event.title,
           description: this.event.description,
           coords: {

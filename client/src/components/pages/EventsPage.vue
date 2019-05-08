@@ -31,7 +31,7 @@
 
 <script>
 import headerFixed from '@/components/modules/header'
-import EventsServise from '@/services/EventsServise'
+import EventsService from '@/services/EventsService'
 import {mapState, mapActions} from 'vuex'
 import BeatLoader from 'vue-spinner/src/BeatLoader'
 import Gmap from '@/components/modules/Gmap'
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     async removeEvent (value) {
-      await EventsServise.deleteEvent(value)
+      await EventsService.deleteEvent(value)
     },
     ...mapActions('events', {
       getEvents: 'getEvents',

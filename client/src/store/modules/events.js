@@ -1,4 +1,4 @@
-import EventsServise from '@/services/EventsServise'
+import EventsService from '@/services/EventsService'
 
 export default {
   namespaced: true,
@@ -21,7 +21,7 @@ export default {
   },
   actions: {
     async getEvents ({commit}) {
-      let responce = await EventsServise.fetchEvents()
+      let responce = await EventsService.fetchEvents()
       let events = responce.data.events
       commit('setEvents', events)
     },

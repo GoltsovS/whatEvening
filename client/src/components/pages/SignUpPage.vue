@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import UserService from '@/services/UserServise'
+import UserService from '@/services/UserService'
 import inputComponent from '@/components/simple/input'
 export default {
   name: 'SignUpPage',

@@ -32,7 +32,7 @@
 <script>
 import Icon from 'vue-awesome'
 import { mapState, mapActions, mapGetters } from 'vuex'
-import UserService from '@/services/UserServise'
+import UserService from '@/services/UserService'
 
 export default {
   name: 'Header',

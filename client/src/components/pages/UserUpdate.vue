@@ -54,7 +54,7 @@
 
 <script>
 import headerFixed from '@/components/modules/header'
-import UserServise from '@/services/UserServise'
+import UserService from '@/services/UserService'
 import {mapState} from 'vuex'
 import error from '@/components/modules/Error'
 
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     async updateProfile () {
-      await UserServise.updateUserProfile({
+      await UserService.updateUserProfile({
         city: this.data.city,
         adress: this.data.adress,
         userId: this.$store.state.user.data._id
