@@ -22,6 +22,7 @@
               )
             .form-group(v-if="error")
               error {{error}}
+            beat-loader(:loading="isLoading")
             .form-group
               button.btn.btn-success.btn-block(type="submit",
                     name="signIn")
@@ -32,14 +33,14 @@
 </template>
 
 <script>
-import inputComponent from '@/components/simple/input'
 import { mapActions } from 'vuex'
 import error from '@/components/modules/Error'
+import BeatLoader from 'vue-spinner/src/BeatLoader'
 export default {
   name: 'SingInPage',
   components: {
-    inputComponent,
-    error
+    error,
+    BeatLoader
   },
   data () {
     return {
@@ -47,25 +48,30 @@ export default {
         email: '',
         password: ''
       },
+      isLoading: false,
       error: false
     }
   },
   methods: {
     async signIn () {
       if (this.user.email !== '' && this.user.password !== '') {
+        this.isLoading = true
         await this.$auth.login({
           email: this.user.email,
           password: this.user.password
         }).then(res => {
+          this.isLoading = false
           if (res.data.auth) {
             this.getUserData()
             this.$store.dispatch('user/setAuth', true)
             this.$router.push({name: 'Events'})
           } else {
             this.error = res.data.message
+            this.isLoading = false
           }
         }).catch(error => {
           this.error = error.response.data.message
+          this.isLoading = false
         })
       } else {
         this.error = 'Заполните все поля!'

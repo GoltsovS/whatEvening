@@ -9,7 +9,6 @@ import UserDetail from '@/components/pages/UserDetail'
 import UserUpdate from '@/components/pages/UserUpdate'
 import SignUp from '@/components/pages/SignUpPage'
 import SignIn from '@/components/pages/SignInPage'
-import Callback from '@/components/Callback'
 import AuthService from '@/auth/AuthService'
 
 Vue.use(Router)
@@ -45,11 +44,6 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
-    },
-    {
-      path: '/callback',
-      name: 'Callback',
-      component: Callback
     },
     {
       path: '/user/detail',
